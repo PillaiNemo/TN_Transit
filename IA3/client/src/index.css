@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   TN Transit visual system
+   Warm cream surfaces, rounded white cards, brick-maroon primary actions,
+   deep forest-green secondary actions and panels, peach accents, pink = booked.
+   Token names are stable (ink / slate / clay / paper / sun / moss) so every page
+   and the admin console follow the palette automatically.
+   --------------------------------------------------------------------------- */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --font-script: "Caveat", "Segoe Script", cursive;
+  /* Numbers and codes use the sans face with tabular figures. */
+  --font-mono: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-tamil: "Noto Serif Tamil", "Latha", serif;
+
+  /* Ink — text */
+  --color-ink-50: #f4f1ea;
+  --color-ink-100: #e9e5dc;
+  --color-ink-200: #d8d2c6;
+  --color-ink-300: #b9b2a5;
+  --color-ink-400: #918a7e;
+  --color-ink-500: #6f6a60;
+  --color-ink-600: #55514a;
+  --color-ink-700: #3f3c37;
+  --color-ink-800: #2c2b28;
+  --color-ink-900: #22231f;
+  --color-ink-950: #1b1d1a;
+
+  /* "slate" = forest green: sidebars, secondary buttons, tabs, selected seats */
+  --color-slate-50: #eef5f1;
+  --color-slate-100: #dbe9e1;
+  --color-slate-200: #b9d2c4;
+  --color-slate-300: #8db3a0;
+  --color-slate-400: #5e8f77;
+  --color-slate-500: #3d7259;
+  --color-slate-600: #2a5c46;
+  --color-slate-700: #1f4d3a;
+  --color-slate-800: #173d2e;
+  --color-slate-900: #102c21;
+
+  /* "clay" = brick maroon: primary actions, active steps, headline accents */
+  --color-clay-50: #fbefea;
+  --color-clay-100: #f5dad0;
+  --color-clay-200: #ebb6a4;
+  --color-clay-300: #dc8d76;
+  --color-clay-400: #c4644a;
+  --color-clay-500: #a8442c;
+  --color-clay-600: #903825;
+  --color-clay-700: #752d1e;
+  --color-clay-800: #5a2318;
+  --color-clay-900: #401a12;
+
+  /* Cream surfaces */
+  --color-paper-50: #f7f1e6;
+  --color-paper-100: #f1e8d8;
+  --color-paper-200: #e8dcc7;
+  --color-paper-300: #d9c8ac;
+
+  /* Peach — icon circles, highlights */
+  --color-sun-50: #fdf6ee;
+  --color-sun-100: #fbeadb;
+  --color-sun-200: #f7dcc4;
+  --color-sun-300: #f2c8a2;
+  --color-sun-400: #e8ac78;
+  --color-sun-500: #d98f55;
+
+  /* Booked seats */
+  --color-booked-100: #fbe1da;
+  --color-booked-300: #f2b4a6;
+  --color-booked-700: #9a3f2e;
+
+  --color-plum-300: #8b787c;
+  --color-plum-500: #534145;
+
+  /* Status green */
+  --color-moss-50: #e9f4ec;
+  --color-moss-100: #d3e9d9;
+  --color-moss-200: #a9d3b5;
+  --color-moss-500: #3b8a57;
+  --color-moss-600: #2f7347;
+  --color-moss-700: #255c39;
+  --color-moss-800: #1c472c;
+
+  --shadow-card: 0 1px 2px rgb(60 40 20 / 0.04), 0 10px 30px -12px rgb(80 55 30 / 0.18);
+  --shadow-lift: 0 2px 6px rgb(60 40 20 / 0.06), 0 24px 48px -20px rgb(80 55 30 / 0.35);
+
+  --animate-fade-up: fade-up 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-toast-in: toast-in 0.25s ease-out both;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes draw {
+  from { stroke-dashoffset: var(--len, 1200); }
+  to { stroke-dashoffset: 0; }
+}
+/* Travel along a lane between --from and --to (SVG user units). */
+@keyframes lane {
+  from { transform: translateX(var(--from)); }
+  to { transform: translateX(var(--to)); }
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50% { transform: rotate(1.2deg); }
+}
+@keyframes pop-in {
+  0% { transform: scale(0.6); opacity: 0; }
+  70% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes check-draw {
+  from { stroke-dashoffset: 40; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes pulse-ring {
+  0% { r: 5; opacity: 0.7; }
+  100% { r: 15; opacity: 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply bg-paper-50 font-sans text-ink-950 antialiased; }
+  ::selection { background: var(--color-clay-200); color: var(--color-ink-950); }
+  :focus-visible { outline: 2px solid var(--color-clay-500); outline-offset: 2px; }
+  input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.55; }
+}
+
+@layer components {
+  .card { @apply rounded-2xl border border-paper-200 bg-white shadow-card; }
+  .panel-card { @apply rounded-2xl border border-paper-200 bg-white p-5 shadow-card; }
+  .panel { @apply border-t border-paper-300; }
+  .label { @apply mb-1.5 block text-xs font-medium text-ink-500; }
+  .kicker { @apply text-xs font-semibold uppercase tracking-[0.14em] text-clay-500; }
+  .display { @apply font-display font-normal tracking-[-0.01em]; }
+  .script { @apply font-script font-semibold; }
+  .figure { @apply font-sans tabular-nums; }
+  .tamil { @apply font-tamil; }
+  .input {
+    @apply block w-full rounded-lg border border-paper-300 bg-white px-3.5 py-2.5 text-sm text-ink-950
+           placeholder:text-ink-300 transition focus:border-slate-600 focus:outline-none focus:ring-4 focus:ring-slate-100
+           disabled:cursor-not-allowed disabled:bg-paper-100;
+  }
+  .input-error { @apply border-rose-400 focus:border-rose-500 focus:ring-rose-100; }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-paper-300 bg-white px-3 py-1 text-sm
+           font-medium text-ink-700 transition hover:border-slate-400 cursor-pointer select-none;
+  }
+  .chip-active { @apply border-slate-700 bg-slate-700 text-white hover:border-slate-700; }
+  .table-head { @apply border-b border-paper-200 bg-paper-50 text-left text-xs font-semibold text-ink-500; }
+  .hatch { background-image: repeating-linear-gradient(135deg, var(--color-ink-200) 0 1.5px, transparent 1.5px 6px); }
+  .link { @apply font-medium text-clay-600 underline decoration-clay-200 underline-offset-[3px] hover:decoration-clay-500; }
+  .tab { @apply rounded-full px-4 py-1.5 text-sm font-medium text-ink-600 transition hover:bg-paper-100 hover:text-ink-950; }
+  .tab-active { @apply bg-slate-700 text-white hover:bg-slate-700 hover:text-white; }
+
+  /* Scroll reveal: an ivory curtain wipes away (the element itself is never clipped,
+     because IntersectionObserver ignores fully clipped targets). */
+  [data-reveal] {
+    position: relative;
+    transform: translateY(18px);
+    transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.1, 1);
+    transition-delay: var(--delay, 0ms);
+  }
+  [data-reveal]::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    background: var(--color-paper-50);
+    transform-origin: 50% 0%;
+    pointer-events: none;
+    transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.1, 1);
+    transition-delay: var(--delay, 0ms);
+  }
+  [data-reveal].is-visible { transform: none; }
+  [data-reveal].is-visible::after { transform: scaleY(0); }
+  [data-reveal="line"] { transform: none; }
+  [data-reveal="line"]::after { transform-origin: 100% 50%; }
+  [data-reveal="line"].is-visible::after { transform: scaleX(0); }
+}
+
+.route-draw { stroke-dasharray: var(--len, 1200); animation: draw 1.8s cubic-bezier(0.6, 0.05, 0.2, 1) both; animation-delay: var(--delay, 0ms); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal], [data-reveal="line"] { transform: none; transition: none; }
+  [data-reveal]::after { display: none; }
+  .route-draw { animation: none; stroke-dasharray: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+  /* Vehicles in illustrations simply stand still instead of jumping to the end of their path. */
+  .scene-move { animation: none !important; transform: translateX(var(--rest, 0px)); }
+}
+
+@media print {
+  [data-reveal], [data-reveal="line"] { transform: none !important; }
+  [data-reveal]::after { display: none !important; }
+  .no-print { display: none !important; }
+  body { background: #fff; }
+  .print-plain { box-shadow: none !important; }
+}
